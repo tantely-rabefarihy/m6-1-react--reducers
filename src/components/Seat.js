@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Tippy from "@tippy.js/react";
-import VisuallyHidden from "@reach/visually-hidden";
 import { Icon } from "react-icons-kit";
 import { checkCircle } from "react-icons-kit/feather/checkCircle";
 
@@ -29,9 +28,6 @@ const Seat = ({ rowIndex, seatIndex, width, height, price, status }) => {
           beginBookingProcess({ seatId, price });
         }}
       >
-        <VisuallyHidden>
-          Seat number {seatNum} in Row {rowName}
-        </VisuallyHidden>
         <img src={seatImageSrc} alt="" style={{ width, height }} />
         {seatIndex === 3 && rowIndex === 1 && (
           <IconWrapper>
