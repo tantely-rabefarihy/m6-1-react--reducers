@@ -4,7 +4,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { getRowName, getSeatNum } from "../helpers";
 import { range } from "../utils";
 import { SeatContext } from "./SeatContext";
-import { Seat } from "./Seat";
+import Seat from "./Seat";
 
 const TicketWidget = () => {
   // TODO: use values from Context
@@ -23,38 +23,42 @@ const TicketWidget = () => {
 
   // TODO: implement the loading spinner <CircularProgress />
   // with the hasLoaded flag
-  console.log(seats);
+
+  if (!hasLoaded) {
+    return <CircularProgress />;
+  }
 
   return (
     <Wrapper>
-      {hasLoaded ? (
-        <>
-          {range(numOfRows).map((rowIndex) => {
-            const rowName = getRowName(rowIndex);
+      <>
+        {range(numOfRows).map((rowIndex) => {
+          const rowName = getRowName(rowIndex);
 
-            return (
-              <Row key={rowIndex}>
-                <RowLabel>Row {rowName}</RowLabel>
-                {range(seatsPerRow).map((seatIndex) => {
-                  const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
-                  const singleSeat = seats[seatId];
-                  return (
-                    <SeatWrapper key={seatId}>
-                      <Seat
-                        seatId={seatId}
-                        seatStatus={singleSeat.isBooked}
-                        seatPrice={singleSeat.price}
-                      />
-                    </SeatWrapper>
-                  );
-                })}
-              </Row>
-            );
-          })}
-        </>
-      ) : (
-        <CircularProgress />
-      )}
+          return (
+            <Row key={rowIndex}>
+              <RowLabel>Row {rowName}</RowLabel>
+              {range(seatsPerRow).map((seatIndex) => {
+                const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
+                const singleSeat = seats[seatId];
+
+                return (
+                  <SeatWrapper key={seatId}>
+                    <Seat
+                      rowIndex={rowIndex}
+                      seatIndex={seatIndex}
+                      seatId={seatId}
+                      width={36}
+                      height={36}
+                      status={singleSeat.isBooked ? "unavailable" : "available"}
+                      price={singleSeat.price}
+                    />
+                  </SeatWrapper>
+                );
+              })}
+            </Row>
+          );
+        })}
+      </>
     </Wrapper>
   );
 };
